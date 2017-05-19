@@ -11,8 +11,8 @@ start_pserver() {
 }
 
 start_trainer() {
-    python /root/k8s_tools.py wait_pods_running paddle-job=${PADDLE_JOB_NAME}-pserver ${PSERVERS}
-    python /root/k8s_tools.py wait_pods_running paddle-job=${PADDLE_JOB_NAME}-trainer ${TRAINERS}
+    python /root/k8s_tools.py wait_pods_running paddle-job-pserver=${PADDLE_JOB_NAME} ${PSERVERS}
+    python /root/k8s_tools.py wait_pods_running paddle-job=${PADDLE_JOB_NAME} ${TRAINERS}
     export PADDLE_INIT_PSERVERS=$(python /root/k8s_tools.py fetch_pserver_ips)
     export PADDLE_INIT_TRAINER_ID=$(python /root/k8s_tools.py fetch_trainer_id)
 
@@ -29,7 +29,7 @@ start_trainer() {
           --ports_num_for_sparse=$PADDLE_INIT_PORTS_NUM_FOR_SPARSE \
           --logs_period=50 \
           --num_passes=$PADDLE_INIT_NUM_PASSES \
-          --trainer_count=1 \
+          --trainer_count=$PADDLE_INIT_TRAINER_COUNT \
           --saving_period=1 \
           --local=0 \
           --config=$TOPOLOGY \
